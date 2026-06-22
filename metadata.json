@@ -1,0 +1,6 @@
+{
+  "name": "Foreclosed Auto Deals",
+  "description": "Premium, responsive car listing web application for verified repossessed and foreclosed vehicles sold at below-market prices.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
