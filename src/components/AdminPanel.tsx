@@ -99,15 +99,23 @@ export default function AdminPanel({
 
   // Let's fetch auth status on mount or when token is updated
   useEffect(() => {
+    let active = true;
     async function checkAuthStatus() {
       try {
-        // Query if any administrator accounts exist in our database
-        const { count, error } = await supabase
+        // Promise with a timeout of 1500ms to guarantee responsive renders
+        const timeoutPromise = new Promise<any>((_, reject) =>
+          setTimeout(() => reject(new Error('Connection check timeout')), 1500)
+        );
+
+        const fetchPromise = supabase
           .from('admins')
           .select('*', { count: 'exact', head: true });
 
+        const { count, error } = await Promise.race([fetchPromise, timeoutPromise]);
+
         if (error) throw error;
 
+        if (!active) return;
         const exists = (count || 0) > 0;
         setIsRegistered(exists);
         if (!exists) {
@@ -117,10 +125,15 @@ export default function AdminPanel({
         }
       } catch (e) {
         console.error("Error reading authentication status from Supabase:", e);
+        if (!active) return;
         setIsRegistered(true); // fallback to secure login form
+        setAuthMode('login');
       }
     }
     checkAuthStatus();
+    return () => {
+      active = false;
+    };
   }, [token]);
 
   // Sync settings when loaded
@@ -174,6 +187,13 @@ export default function AdminPanel({
           });
 
         if (insertErr) throw insertErr;
+
+        if (!data.session) {
+          alert("Registration holds successfully! We detected Email confirmation is enabled for your project. Please confirm your email before logging in, or disable 'Confirm email' under Auth configuration in your Supabase Dashboard.");
+          setAuthMode('login');
+          setIsRegistered(true);
+          return;
+        }
 
         // Automatically log them in since SignUp logs the user in
         onLogin(data.session?.access_token || '', {
@@ -491,16 +511,15 @@ export default function AdminPanel({
               </button>
             </form>
 
-            {isRegistered && (
-              <div className="text-center">
-                <button
-                  onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}
-                  className="text-xs font-mono text-gold-605 hover:underline"
-                >
-                  {authMode === 'login' ? "" : ""}
-                </button>
-              </div>
-            )}
+            <div className="text-center pt-2">
+              <button
+                type="button"
+                onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}
+                className="text-xs font-mono text-gold-600 hover:text-gold-700 hover:underline cursor-pointer"
+              >
+                {authMode === 'login' ? "Need to register first admin? Switch to Setup" : "Already registered? Switch to Login"}
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@
 create extension if not exists "uuid-ossp";
 
 -- 1. Create admins table
-create table if nulls not exists public.admins (
+create table if not exists public.admins (
   id uuid references auth.users(id) on delete cascade primary key,
   email text not null unique,
   name text,
