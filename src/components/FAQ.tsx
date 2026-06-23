@@ -44,26 +44,26 @@ export default function FAQ() {
           <div
             key={index}
             id={`faq-item-${index}`}
-            className="border border-white/5 bg-[#0f1115] hover:bg-[#12151a] rounded-xl overflow-hidden transition-all duration-300"
+            className="border border-slate-200 bg-white hover:bg-slate-50 rounded-xl overflow-hidden shadow-sm transition-all duration-300"
           >
             <button
               onClick={() => toggle(index)}
               className="w-full flex items-center justify-between p-5 text-left focus:outline-none"
             >
-              <span className="font-display font-medium text-white text-base sm:text-lg tracking-tight pr-4 hover:text-gold-200 transition-colors">
+              <span className="font-display font-medium text-slate-800 text-base sm:text-lg tracking-tight pr-4 hover:text-gold-600 transition-colors">
                 {faq.question}
               </span>
-              <span className={`p-2 bg-white/5 rounded-full text-gold-400 transition-transform duration-300 ${isOpen ? 'rotate-90 bg-gold-400/10' : ''}`}>
+              <span className={`p-2 bg-slate-100 rounded-full text-gold-600 transition-transform duration-300 ${isOpen ? 'rotate-90 bg-gold-100/50' : ''}`}>
                 <ChevronRight className="w-4 h-4" />
               </span>
             </button>
             
             <div
               className={`transition-all duration-300 ease-in-out ${
-                isOpen ? 'max-h-80 opacity-100 border-t border-white/5' : 'max-h-0 opacity-0'
+                isOpen ? 'max-h-80 opacity-100 border-t border-slate-100' : 'max-h-0 opacity-0'
               } overflow-hidden`}
             >
-              <div className="p-5 text-gray-400 text-sm leading-relaxed font-sans bg-[#0c0d10]">
+              <div className="p-5 text-slate-600 text-sm leading-relaxed font-sans bg-slate-50/50">
                 {faq.answer}
               </div>
             </div>

@@ -36,12 +36,14 @@ export interface Settings {
   whatsapp: string;
   email: string;
   address: string;
+  logoUrl?: string;
   socialLinks: {
     facebook?: string;
     instagram?: string;
     twitter?: string;
     youtube?: string;
   };
+  footerContent?: string;
 }
 
 export interface Admin {
@@ -49,6 +51,17 @@ export interface Admin {
   name: string;
   email: string;
   createdAt: string;
+}
+
+export interface Car {
+  id: string;
+  make: string;
+  model: string;
+  year: number;
+  price: number;
+  mileage: number;
+  image_url: string;
+  created_at: string;
 }
 
 export interface DatabaseSchema {
